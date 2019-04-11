@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   TextInput,
   Button,
@@ -21,15 +19,15 @@ export default class AddRouteScreen extends React.Component {
       state: 'OH',
       zip: '45056',
       newspapers: ['JN', 'NYT']
-    }, {
-      id: 0,
+    }],
+    papers: ['JN', 'DD', 'NYT', 'WSJ'],
+    newAddress: {
       street: '',
       city: '',
       state: '',
-      zip: null,
+      zip: '',
       newspapers: []
-    }],
-    papers: ['JN', 'DD', 'NYT', 'WSJ']
+    }
   }
   handleNameChange = (text) => {
     this.setState({
@@ -45,20 +43,87 @@ export default class AddRouteScreen extends React.Component {
       ]
     )
   }
-  handlePaperChange = (id, paperName) => {
-    const addresses = this.state.addresses;
-    const addressIdx = addresses.findIndex((data) => data.id = id);
-    const address = addresses[addressIdx];
+  handleAddressChange = (field, e) => {
+    const value = e;
+    switch (field) {
+      case 'street':
+        this.setState(prevState => ({
+          newAddress: {
+            ...prevState.newAddress,
+            street: value
+          }
+        }));
+        break;
+      case 'city':
+        this.setState(prevState => ({
+          newAddress: {
+            ...prevState.newAddress,
+            city: value
+          }
+        }));
+        break;
+      case 'state':
+        this.setState(prevState => ({
+          newAddress: {
+            ...prevState.newAddress,
+            state: value
+          }
+        }));
+        break;
+      case 'zip':
+        this.setState(prevState => ({
+          newAddress: {
+            ...prevState.newAddress,
+            zip: value
+          }
+        }));
+        break;
+      default: 
+        break;
+    }
+  }
+  handlePaperChange = (paperName) => {
+    const address = Object.assign({}, this.state.newAddress);
     const paperIdx = address.newspapers.findIndex((data) => data === paperName)
     if (paperIdx >= 0){
       address.newspapers = address.newspapers.filter((data) => data !== paperName);
     } else {
       address.newspapers.push(paperName);
-    }
-    addresses[addressIdx] = address;
+    } 
     this.setState({
-      addresses: addresses
-    });
+      newAddress: {...address}
+    })
+  }
+  addNewAddress = () => {
+    const address = Object.assign({}, this.state.newAddress);
+    let errMessage;
+    if(address.street === '') 
+      errMessage = 'Please include a number and street';
+    else if(address.city === '')
+      errMessage = 'Please include a city';
+    else if(address.state === '' || address.state.length !== 2)
+      errMessage = 'Please include a 2-letter state code';
+    else if(address.zip === '' || address.zip.length !== 5 || isNaN(parseInt(address.zip)))
+      errMessage = 'Please include a 5-digit numeric zip';
+    else if(address.newspapers.length === 0)
+      errMessage = 'Please select at least one newspaper';
+    else
+      errMessage = '';
+    
+    if (errMessage !== ''){
+      Alert.alert('Invalid address', errMessage, [{text: 'OK'}]);
+    } else {
+      this.setState( prevState => ({
+        addresses: [...prevState.addresses, {...address}],
+        newAddress: {
+          street: '',
+          city: '',
+          state: '',
+          zip: '',
+          newspapers: []
+        }
+      }));
+    }
   }
   render() {
     return (
@@ -68,31 +133,60 @@ export default class AddRouteScreen extends React.Component {
                placeholder = "Route Name"
                placeholderTextColor = "gray"
                autoCapitalize = "none"
-               onChangeText = {this.handleNameChange} >
+               onChangeText = {() => this.handleNameChange()} >
         </TextInput>
         <ScrollView>
           {this.state.addresses.map((item, index)=> (
-            <View key={item.id}>
-              <TextInput value={item.street}></TextInput>
-              <TextInput value={item.city}></TextInput>
-              <TextInput value={item.state}></TextInput>
-              <TextInput value={item.zip}></TextInput>
-              <View>
-                {
-                  this.state.papers.map((paperName, index) => (
-                    <Button
-                      key={index}
-                      color= {(item.newspapers.find((data) => data === paperName)) ? 'green' : 'red'}
-                      onPress={() => this.handlePaperChange(item.id, paperName)}
-                      title = {paperName}>
-                    </Button>
-                  ))
-                }
-              </View>
+            <View key={index}>
+              <Text>{`${item.street} ${item.city}, ${item.state} ${item.zip}`}</Text>
+              <Text>{item.newspapers.map((paperName, index) => (
+                paperName + (index !== item.newspapers.length - 1 ? ',' : '')
+              ))}</Text>
             </View>
           ))}
         </ScrollView>
-        <Button onPress = {this.submitRoute}
+        <View >
+          <TextInput value={this.state.newAddress.street}
+            onChangeText={(e) => this.handleAddressChange('street', e)}
+            placeholder='Street'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor = "gray"
+            autoCapitalize = "none"></TextInput>
+          <TextInput value={this.state.newAddress.city}
+            onChangeText={(e) => this.handleAddressChange('city', e)}
+            placeholder='City'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor = "gray"
+            autoCapitalize = "none"></TextInput>
+          <TextInput value={this.state.newAddress.state}
+            onChangeText={(e) => this.handleAddressChange('state', e)}
+            placeholder='State'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor = "gray"
+            autoCapitalize = "none"></TextInput>
+          <TextInput value={this.state.newAddress.zip}
+            onChangeText={(e) => this.handleAddressChange('zip', e)}
+            placeholder='Zip'
+            underlineColorAndroid = "transparent"
+            placeholderTextColor = "gray"
+            autoCapitalize = "none"></TextInput>
+          <View>
+            {
+              this.state.papers.map((paperName, index) => (
+                <Button
+                  key={index}
+                  color= {(this.state.newAddress.newspapers.find((data) => data === paperName)) ? 'green' : 'red'}
+                  onPress={() => this.handlePaperChange(paperName)}
+                  title = {paperName}>
+                </Button>
+              ))
+            }
+          </View>
+          <Button style={styles.plus} 
+            onPress={() => this.addNewAddress()} 
+            title='+'></Button>
+        </View>
+        <Button onPress = {() => this.submitRoute()}
                 title = 'Submit'
                 color = 'blue'/>
       </View>
@@ -102,5 +196,15 @@ export default class AddRouteScreen extends React.Component {
 const styles = StyleSheet.create({
   input: {
 
+  },
+  plus: {
+    borderRadius: 50,
+    backgroundColor: '#4CAF50', /* Green */
+    color: 'white',
+    padding: '20px',
+    textAlign: 'center',
+    display: 'none',
+    fontSize: 16,
+    margin: '4px 2px'
   }
 })
