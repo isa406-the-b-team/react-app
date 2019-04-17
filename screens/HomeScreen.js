@@ -24,6 +24,7 @@ export default class HomeScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <Image
               source={
+                // eslint-disable-next-line no-undef
                 __DEV__
                   ? require('../assets/images/robot-dev.png')
                   : require('../assets/images/robot-prod.png')
@@ -65,6 +66,7 @@ export default class HomeScreen extends React.Component {
   }
 
   _maybeRenderDevelopmentModeWarning() {
+    // eslint-disable-next-line no-undef
     if (__DEV__) {
       const learnMoreButton = (
         <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>

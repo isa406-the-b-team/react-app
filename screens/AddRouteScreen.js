@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 export default class AddRouteScreen extends React.Component {
+  // days stored as 0b0[Sun][Mon][Tues][Wed][Thurs][Fri][Sat]
+  // 1 = deliver, 0 = not deliver
   state = {
     routeName: '',
     addresses: [{
@@ -18,9 +20,15 @@ export default class AddRouteScreen extends React.Component {
       city: 'Oxford',
       state: 'OH',
       zip: '45056',
-      newspapers: ['JN', 'NYT']
+      newspapers: [{
+        name: 'JN',
+        days: 0b01000111
+      }, {
+        name: 'NYT',
+        days: 0b01111111
+      }]
     }],
-    papers: ['JN', 'DD', 'NYT', 'WSJ'],
+    papers: ['JN', 'DDN', 'NYT', 'WSJ'],
     newAddress: {
       street: '',
       city: '',
@@ -96,7 +104,7 @@ export default class AddRouteScreen extends React.Component {
   }
   addNewAddress = () => {
     const address = Object.assign({}, this.state.newAddress);
-    let errMessage;
+    let errMessage = null;
     if(address.street === '') 
       errMessage = 'Please include a number and street';
     else if(address.city === '')
@@ -107,10 +115,8 @@ export default class AddRouteScreen extends React.Component {
       errMessage = 'Please include a 5-digit numeric zip';
     else if(address.newspapers.length === 0)
       errMessage = 'Please select at least one newspaper';
-    else
-      errMessage = '';
     
-    if (errMessage !== ''){
+    if (errMessage){
       Alert.alert('Invalid address', errMessage, [{text: 'OK'}]);
     } else {
       this.setState( prevState => ({
@@ -127,7 +133,7 @@ export default class AddRouteScreen extends React.Component {
   }
   render() {
     return (
-       <View>
+       <View style = {styles.container}>
         <TextInput style = {styles.input}
                underlineColorAndroid = "transparent"
                placeholder = "Route Name"
@@ -194,12 +200,17 @@ export default class AddRouteScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // flexDirection: 'column',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+  },
   input: {
 
   },
   plus: {
     borderRadius: 50,
-    backgroundColor: '#4CAF50', /* Green */
+    backgroundColor: '#4CAF50', 
     color: 'white',
     padding: '20px',
     textAlign: 'center',
