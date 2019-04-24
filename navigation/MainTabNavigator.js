@@ -6,7 +6,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import SelectRoute from '../screens/SelectRoute';
-import LinksScreen from '../screens/LinksScreen';
+import BeginRouteScreen from '../screens/BeginRouteScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import AddRouteScreen from '../screens/AddRouteScreen';
 
@@ -43,7 +43,7 @@ AddRouteStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+  Links: BeginRouteScreen,
 });
 
 LinksStack.navigationOptions = {
