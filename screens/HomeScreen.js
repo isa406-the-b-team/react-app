@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
@@ -21,8 +22,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-          </View>
+          <View style={styles.welcomeContainer}></View>
 
           <View style={styles.getStartedContainer}>
 
@@ -33,6 +33,21 @@ export default class HomeScreen extends React.Component {
             </View>
 
           </View>
+          <View>
+            <Button
+              title="Route A"
+              type="outline"
+            onPress={() => this.selectRoute()}/>
+            <Button
+                title="Route B"
+                type="outline"
+            onPress={() => this.selectRoute()}/>
+            <Button
+                title="Route C"
+                type="outline"
+            onPress={() => this.selectRoute()}/>
+          </View>
+
 
         </ScrollView>
 
@@ -44,14 +59,8 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
+  selectRoute = () => {
+    this.props;
   };
 }
 
