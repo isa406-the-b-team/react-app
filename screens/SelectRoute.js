@@ -10,7 +10,7 @@ import { Button } from 'react-native-elements';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class SelectRoute extends React.Component {
   render() {
     return (
       <View style={styles.container}>
