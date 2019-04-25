@@ -42,12 +42,12 @@ AddRouteStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
+const BeginRouteStack = createStackNavigator({
   Links: BeginRouteScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+BeginRouteStack.navigationOptions = {
+  tabBarLabel: 'Begin Route',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -73,6 +73,6 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   AddRouteStack,
-  LinksStack,
+  BeginRouteStack,
   SettingsStack,
 });
