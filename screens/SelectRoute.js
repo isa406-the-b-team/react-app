@@ -11,6 +11,10 @@ import { Button } from 'react-native-elements';
 import { MonoText } from '../components/StyledText';
 
 export default class SelectRoute extends React.Component {
+
+  //TODO Implement function to load and display stored routes on buttons
+  //Will we limit the number of routes that can be stored? Or will we need
+  //to handle a variable amount of buttons?
   render() {
     return (
       <View style={styles.container}>
@@ -26,6 +30,7 @@ export default class SelectRoute extends React.Component {
             </View>
 
           </View>
+
           <View>
             <Button
               title="Route A"
@@ -52,6 +57,7 @@ export default class SelectRoute extends React.Component {
     );
   }
 
+  //TODO Implement function to move to BeginRoute screen with correct info
   selectRoute = () => {
     this.props;
   };

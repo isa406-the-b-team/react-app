@@ -1,7 +1,6 @@
 import React from 'react';
 import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from "../components/StyledText";
 
 export default class BeginRouteScreen extends React.Component {
