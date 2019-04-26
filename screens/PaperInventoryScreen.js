@@ -3,22 +3,23 @@ import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { MonoText } from "../components/StyledText";
 
-class PaperInventoryScreen extends React.Component {
+export default class PaperInventoryScreen extends React.Component {
 
   render() {
 
+    //TODO Implement confirm papers button function
+    //TODO Retrieve actual paper inventory
     /*
-    Literally just a clone of BeginRouteScreen
-    for re-purposing.
+    See BeginRouteScreen
      */
-    const addressList = [
+    const paperList = [
       {
-        addressLineOne: 'ADDRESS ONE',
-        addressLineTwo: 'SECONDLINE ONE'
+        paperName: 'NY TIMES',
+        inventoryMessage: 'X copies required.'
       },
       {
-        addressLineOne: 'ADDRESS TWO',
-        addressLineTwo: 'SECONDLINE TWO'
+        paperName: 'WALL STREET JOURNAL',
+        inventoryMessage: 'X copies required.'
       }];
 
     return (
@@ -27,27 +28,27 @@ class PaperInventoryScreen extends React.Component {
             <View style={styles.welcomeContainer}></View>
 
             <View style={styles.getStartedContainer}>
-              <Text style={styles.getStartedText}>ROUTENAMEHERE</Text>
+              <Text style={styles.getStartedText}>ROUTENAME</Text>
 
               <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-                <MonoText style={styles.codeHighlightText}>Confirm Addresses</MonoText>
+                <MonoText style={styles.codeHighlightText}>Items to be Delivered</MonoText>
               </View>
             </View>
 
             <View>
               {
-                addressList.map((item, i) => (
+                paperList.map((item, i) => (
                     <ListItem
                         key={i}
-                        title={item.addressLineOne}
-                        subtitle={item.addressLineTwo}
+                        title={item.paperName}
+                        subtitle={item.inventoryMessage}
                     />
                 ))
               }
             </View>
 
             <View>
-              <Button title="Confirm Route"/>
+              <Button title="Confirm Papers"/>
             </View>
 
           </ScrollView>

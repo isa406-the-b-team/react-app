@@ -5,12 +5,10 @@ import { MonoText } from "../components/StyledText";
 
 export default class BeginRouteScreen extends React.Component {
 
-
-
   render() {
 
     //TODO Implement confirm route button function
-    //TODO Retrieve actual address list before renders
+    //TODO Retrieve actual address list
     /*
     This array can be expanded to include as many elements as needed.
     The easiest solution to display addresses is to write a function to
@@ -21,12 +19,12 @@ export default class BeginRouteScreen extends React.Component {
      */
     const addressList = [
       {
-        addressLineOne: 'ADDRESS ONE',
-        addressLineTwo: 'SECONDLINE ONE'
+        paperName: 'ADDRESS ONE',
+        inventoryMessage: 'SECONDLINE ONE'
       },
       {
-        addressLineOne: 'ADDRESS TWO',
-        addressLineTwo: 'SECONDLINE TWO'
+        paperName: 'ADDRESS TWO',
+        inventoryMessage: 'SECONDLINE TWO'
       }];
 
     return (
@@ -35,7 +33,7 @@ export default class BeginRouteScreen extends React.Component {
             <View style={styles.welcomeContainer}></View>
 
             <View style={styles.getStartedContainer}>
-              <Text style={styles.getStartedText}>ROUTENAMEHERE</Text>
+              <Text style={styles.getStartedText}>ROUTENAME</Text>
 
               <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
                 <MonoText style={styles.codeHighlightText}>Confirm Addresses</MonoText>
@@ -47,8 +45,8 @@ export default class BeginRouteScreen extends React.Component {
                 addressList.map((item, i) => (
                     <ListItem
                         key={i}
-                        title={item.addressLineOne}
-                        subtitle={item.addressLineTwo}
+                        title={item.paperName}
+                        subtitle={item.inventoryMessage}
                     />
                 ))
               }
