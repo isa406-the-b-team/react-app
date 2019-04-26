@@ -52,7 +52,7 @@ export default class BeginRouteScreen extends React.Component {
               }
             </View>
 
-            <View>
+            <View style={styles.confirmButton}>
               <Button title="Confirm Route"/>
             </View>
 
@@ -65,6 +65,10 @@ export default class BeginRouteScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  confirmButton: {
+    marginVertical: 5,
+    marginHorizontal: 35
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

@@ -32,18 +32,31 @@ export default class SelectRoute extends React.Component {
           </View>
 
           <View>
-            <Button
-              title="Route A"
-              type="outline"
-            onPress={() => this.selectRoute()}/>
-            <Button
-                title="Route B"
-                type="outline"
-            onPress={() => this.selectRoute()}/>
-            <Button
-                title="Route C"
-                type="outline"
-            onPress={() => this.selectRoute()}/>
+            <View />
+
+
+
+          </View>
+
+          <View>
+            <View style={styles.routeButton}>
+              <Button
+                  title="Route A"
+                  type="outline"
+                  onPress={() => this.selectRoute()}/>
+            </View>
+            <View style={styles.routeButton}>
+              <Button
+                  title="Route B"
+                  type="outline"
+                  onPress={() => this.selectRoute()}/>
+            </View>
+            <View style={styles.routeButton}>
+              <Button
+                  title="Route C"
+                  type="outline"
+                  onPress={() => this.selectRoute()}/>
+            </View>
           </View>
 
 
@@ -64,6 +77,10 @@ export default class SelectRoute extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  routeButton: {
+    marginVertical: 5,
+    marginHorizontal: 35
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
