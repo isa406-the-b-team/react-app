@@ -58,7 +58,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            street: value
+            street: value.trim()
           }
         }));
         break;
@@ -66,7 +66,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            city: value
+            city: value.trim()
           }
         }));
         break;
@@ -74,7 +74,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            state: value
+            state: value.trim()
           }
         }));
         break;
@@ -82,7 +82,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            zip: value
+            zip: value.trim()
           }
         }));
         break;
@@ -90,13 +90,13 @@ export default class AddRouteScreen extends React.Component {
         break;
     }
   }
-  handlePaperChange = (paperName) => {
+  handlePaperChange = (paper) => {
     const address = Object.assign({}, this.state.newAddress);
-    const paperIdx = address.newspapers.findIndex((data) => data === paperName)
+    const paperIdx = address.newspapers.findIndex((data) => data === paper.name)
     if (paperIdx >= 0){
-      address.newspapers = address.newspapers.filter((data) => data !== paperName);
+      address.newspapers = address.newspapers.filter((data) => data !== paper);
     } else {
-      address.newspapers.push(paperName);
+      address.newspapers.push(paper);
     } 
     this.setState({
       newAddress: {...address}
@@ -145,8 +145,8 @@ export default class AddRouteScreen extends React.Component {
           {this.state.addresses.map((item, index)=> (
             <View key={index}>
               <Text>{`${item.street} ${item.city}, ${item.state} ${item.zip}`}</Text>
-              <Text>{item.newspapers.map((paperName, index) => (
-                paperName + (index !== item.newspapers.length - 1 ? ',' : '')
+              <Text>{item.newspapers.map((paper, index) => (
+                paper.name + (index !== item.newspapers.length - 1 ? ',' : '')
               ))}</Text>
             </View>
           ))}

@@ -10,6 +10,7 @@ import BeginRouteScreen from '../screens/BeginRouteScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import AddRouteScreen from '../screens/AddRouteScreen';
 import PaperInventoryScreen from '../screens/PaperInventoryScreen';
+import MappingScreen from '../screens/MappingScreen';
 
 const HomeStack = createStackNavigator({
   Home: SelectRoute,
@@ -81,6 +82,19 @@ PaperInventoryStack.navigationOptions = {
   ),
 };
 
+const MapStack= createStackNavigator({
+  Map: MappingScreen,
+});
+
+MapStack.navigationOptions = {
+  tabBarLabel: 'Mapping',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    />
+  ),
+};
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -97,6 +111,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  MapStack,
   AddRouteStack,
   BeginRouteStack,
   PaperInventoryStack,

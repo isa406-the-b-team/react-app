@@ -12,14 +12,19 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "@mapbox/polyline": "^1.0.0",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
+    "csv-parse": "^4.4.1",
     "eslint-plugin-react-native": "^3.6.0",
     "expo": "^32.0.0",
     "jest": "^24.7.0",
+    "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
+    "react-native-google-maps-directions": "^2.0.0",
+    "react-native-maps": "^0.24.2",
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {
