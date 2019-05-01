@@ -58,7 +58,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            street: value.trim()
+            street: value
           }
         }));
         break;
@@ -66,7 +66,7 @@ export default class AddRouteScreen extends React.Component {
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            city: value.trim()
+            city: value
           }
         }));
         break;

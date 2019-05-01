@@ -9,54 +9,68 @@ import {
 import { Button } from 'react-native-elements';
 
 import { MonoText } from '../components/StyledText';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
 export default class SelectRoute extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      routes: [{name: 'Route A', id: 1}, {name: 'Route B', id: 2}, {name: 'Route C', id: 3}]
+    }
+    this.getRoutes = this.getRoutes.bind(this);
+  }
 
+  async getRoutes() {
+    try {
+      const routes = await axios.get('http://10.36.0.92:8080/route');
+      if (routes && routes.length > 0) {
+        this.setState({
+          routes: routes
+        })
+      }
+    } catch (e) {
+      alert(e)
+    }
+  }
+
+  componentDidMount() {
+    this.getRoutes()
+  }
   //TODO Implement function to load and display stored routes on buttons
   //Will we limit the number of routes that can be stored? Or will we need
   //to handle a variable amount of buttons?
+  selectRoute(e) {
+    const routeId = e.target.value;
+    this.props.history.push(`/beginRoute/${routeId}`);
+  }
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}></View>
 
-          <View style={styles.getStartedContainer}>
+            <View style={styles.getStartedContainer}>
 
-            <Text style={styles.getStartedText}>Setup a Route</Text>
+              <Text style={styles.getStartedText}>Setup a Route</Text>
 
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>Choose Route</MonoText>
-            </View>
-
-          </View>
-
-          <View>
-            <View />
-
-
+              <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
+                <MonoText style={styles.codeHighlightText}>Choose Route</MonoText>
+              </View>
 
           </View>
-
           <View>
-            <View style={styles.routeButton}>
+            {this.state.routes.map((route) => (
+            <View
+                key = {route.id} 
+                style={styles.routeButton}>
               <Button
-                  title="Route A"
+                  value = {route.id}
+                  title= {route.name}
                   type="outline"
-                  onPress={() => this.selectRoute()}/>
-            </View>
-            <View style={styles.routeButton}>
-              <Button
-                  title="Route B"
-                  type="outline"
-                  onPress={() => this.selectRoute()}/>
-            </View>
-            <View style={styles.routeButton}>
-              <Button
-                  title="Route C"
-                  type="outline"
-                  onPress={() => this.selectRoute()}/>
-            </View>
+                  onPress={(e) => this.selectRoute(e)}/>
+            </View>))}
+            
           </View>
 
 
@@ -69,11 +83,6 @@ export default class SelectRoute extends React.Component {
       </View>
     );
   }
-
-  //TODO Implement function to move to BeginRoute screen with correct info
-  selectRoute = () => {
-    this.props;
-  };
 }
 
 const styles = StyleSheet.create({

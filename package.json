@@ -25,7 +25,9 @@
     "react-native-elements": "^1.1.0",
     "react-native-google-maps-directions": "^2.0.0",
     "react-native-maps": "^0.24.2",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.0.9",
+    "react-router": "^5.0.0",
+    "react-router-native": "^5.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
