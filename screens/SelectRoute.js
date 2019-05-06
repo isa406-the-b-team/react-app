@@ -19,11 +19,13 @@ export default class SelectRoute extends React.Component {
       routes: [{name: 'Route A', id: 1}, {name: 'Route B', id: 2}, {name: 'Route C', id: 3}]
     }
     this.getRoutes = this.getRoutes.bind(this);
+    this.selectRoute = this.selectRoute.bind(this);
   }
 
   async getRoutes() {
     try {
-      const routes = await axios.get('http://10.36.0.92:8080/route');
+      const resp = await axios.get('http://10.36.0.92:8080/route');
+      const routes = resp.data ? resp.data : null;
       if (routes && routes.length > 0) {
         this.setState({
           routes: routes
@@ -41,8 +43,6 @@ export default class SelectRoute extends React.Component {
   //Will we limit the number of routes that can be stored? Or will we need
   //to handle a variable amount of buttons?
   selectRoute(e) {
-    const routeId = e.target.value;
-    this.props.history.push(`/beginRoute/${routeId}`);
   }
   render() {
     return (
@@ -65,17 +65,23 @@ export default class SelectRoute extends React.Component {
                 key = {route.id} 
                 style={styles.routeButton}>
               <Button
-                  value = {route.id}
+                  id = {route.id}
                   title= {route.name}
                   type="outline"
-                  onPress={(e) => this.selectRoute(e)}/>
+                  onPress={() => 
+                    this.props.history.push(`/beginRoute/${encodeURIComponent(route.id)}`)}/>
             </View>))}
             
           </View>
-
+          <View>
+              <Button
+                  title= 'Add a New Route'
+                  type="outline"
+                  onPress={() => this.props.history.push('/addroute')}/>
+          </View>
 
         </ScrollView>
-
+        
         <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>By starting a route, you agree to our Terms of Service</Text>
         </View>
