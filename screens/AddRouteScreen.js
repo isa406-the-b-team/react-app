@@ -8,57 +8,60 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import axios from 'axios';
 
 export default class AddRouteScreen extends React.Component {
   // days stored as 0b0[Sun][Mon][Tues][Wed][Thurs][Fri][Sat]
   // 1 = deliver, 0 = not deliver
-  state = {
-    routeName: '',
-    addresses: [{
-      id: 1,
-      street: '123 Fake Ave.',
-      city: 'Oxford',
-      state: 'OH',
-      zip: '45056',
-      newspapers: [{
-        name: 'JN',
-        days: 0b01000111
-      }, {
-        name: 'NYT',
-        days: 0b01111111
-      }]
-    }],
-    papers: ['JN', 'DDN', 'NYT', 'WSJ'],
-    newAddress: {
-      street: '',
-      city: '',
-      state: '',
-      zip: '',
-      newspapers: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      routeName: '',
+      addresses: [],
+      papers: ['JN', 'DDN', 'NYT', 'WSJ'],
+      newAddress: {
+        street1: '',
+        city: '',
+        state: '',
+        zip: '',
+        newspapers: []
+      }
     }
   }
-  handleNameChange = (text) => {
+  
+  handleNameChange(text) {
     this.setState({
       routeName: text
     });
   }
-  submitRoute = () => {
-    Alert.alert(
-      'Submit',
-      'Your route has been sent to our servers',
-      [
-        {text: 'OK'}
-      ]
-    )
+  async submitRoute(){
+    const {routeName, addresses, newAddress} = this.state
+    if(routeName && addresses.length > 0) {
+      const data = {
+        routeId: routeName, 
+        recipients: addresses
+      }
+      const resp = await axios.post('http://10.36.0.92:8080/route', data)
+      if (resp.status === 201) {
+        Alert.alert(
+          'Submit',
+          'Your route has been sent to our servers',
+          [
+            {text: 'OK'}
+          ]
+        )
+      }
+    }
+    
   }
-  handleAddressChange = (field, e) => {
+  handleAddressChange(field, e) {
     const value = e;
     switch (field) {
       case 'street':
         this.setState(prevState => ({
           newAddress: {
             ...prevState.newAddress,
-            street: value
+            street1: value
           }
         }));
         break;
@@ -90,22 +93,26 @@ export default class AddRouteScreen extends React.Component {
         break;
     }
   }
-  handlePaperChange = (paper) => {
+  handlePaperChange(paper) {
     const address = Object.assign({}, this.state.newAddress);
-    const paperIdx = address.newspapers.findIndex((data) => data === paper.name)
+    const paperIdx = address.newspapers.findIndex((data) => data.newspaperCode === paper.newspaperCode)
     if (paperIdx >= 0){
-      address.newspapers = address.newspapers.filter((data) => data !== paper);
+      address.newspapers = address.newspapers.filter((data) => data.newspaperCode !== paper.newspaperCode);
     } else {
-      address.newspapers.push(paper);
+      const newPaper = {
+        newspaperCode: paper.newspaperCode,
+        days: paper.days ? paper.days : null
+      }
+      address.newspapers.push(newPaper);
     } 
     this.setState({
       newAddress: {...address}
     })
   }
-  addNewAddress = () => {
+  addNewAddress() {
     const address = Object.assign({}, this.state.newAddress);
     let errMessage = null;
-    if(address.street === '') 
+    if(address.street1 === '') 
       errMessage = 'Please include a number and street';
     else if(address.city === '')
       errMessage = 'Please include a city';
@@ -122,7 +129,7 @@ export default class AddRouteScreen extends React.Component {
       this.setState( prevState => ({
         addresses: [...prevState.addresses, {...address}],
         newAddress: {
-          street: '',
+          street1: '',
           city: '',
           state: '',
           zip: '',
@@ -144,7 +151,7 @@ export default class AddRouteScreen extends React.Component {
         <ScrollView>
           {this.state.addresses.map((item, index)=> (
             <View key={index}>
-              <Text>{`${item.street} ${item.city}, ${item.state} ${item.zip}`}</Text>
+              <Text>{`${item.street1} ${item.city}, ${item.state} ${item.zip}`}</Text>
               <Text>{item.newspapers.map((paper, index) => (
                 paper.name + (index !== item.newspapers.length - 1 ? ',' : '')
               ))}</Text>
@@ -152,7 +159,7 @@ export default class AddRouteScreen extends React.Component {
           ))}
         </ScrollView>
         <View >
-          <TextInput value={this.state.newAddress.street}
+          <TextInput value={this.state.newAddress.street1}
             onChangeText={(e) => this.handleAddressChange('street', e)}
             placeholder='Street'
             underlineColorAndroid = "transparent"
@@ -178,12 +185,12 @@ export default class AddRouteScreen extends React.Component {
             autoCapitalize = "none"></TextInput>
           <View>
             {
-              this.state.papers.map((paperName, index) => (
+              this.state.papers.map((paper, index) => (
                 <Button
                   key={index}
-                  color= {(this.state.newAddress.newspapers.find((data) => data === paperName)) ? 'green' : 'red'}
-                  onPress={() => this.handlePaperChange(paperName)}
-                  title = {paperName}>
+                  color= {(this.state.newAddress.newspapers.find((data) => data.newspaperCode === paper.newspaperCode)) ? 'green' : 'red'}
+                  onPress={() => this.handlePaperChange(paper)}
+                  title = {paper.newspaperCode}>
                 </Button>
               ))
             }
