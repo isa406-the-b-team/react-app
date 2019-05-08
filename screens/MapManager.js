@@ -9,7 +9,7 @@ export default class MapManager extends Component {
     super(props);
     this.state = {
       routeId: this.props.match.params.routeId,
-      routeList: [],
+      routeList: ["3770 Southpointe Pkwy Oxford OH 45056", "501 E. High Street Oxford OH 45056", "550 E. Spring Street Oxford OH 45056"],
       currentLoc: null,
       nextLoc: null
     }

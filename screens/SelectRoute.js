@@ -16,7 +16,7 @@ export default class SelectRoute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      routes: [{name: 'Route A', id: 1}, {name: 'Route B', id: 2}, {name: 'Route C', id: 3}]
+      routes: [{name: 'Route A'}, {name: 'Route B'}, {name: 'Route C'}]
     }
     this.getRoutes = this.getRoutes.bind(this);
     this.selectRoute = this.selectRoute.bind(this);
@@ -69,7 +69,7 @@ export default class SelectRoute extends React.Component {
                   title= {route.name}
                   type="outline"
                   onPress={() => 
-                    this.props.history.push(`/beginRoute/${encodeURIComponent(route.id)}`)}/>
+                    this.props.history.push(`/beginRoute/${encodeURIComponent(route.name)}`)}/>
             </View>))}
             
           </View>
