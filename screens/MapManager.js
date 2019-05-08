@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native'
+import {View, StyleSheet} from 'react-native'
 import {Button} from 'react-native-elements';
 import MappingScreen from './MappingScreen';
 import axios from 'axios';
@@ -10,10 +10,10 @@ export default class MapManager extends Component {
     this.state = {
       routeId: this.props.match.params.routeId,
       routeList: ["3770 Southpointe Pkwy Oxford OH 45056", "501 E. High Street Oxford OH 45056", "550 E. Spring Street Oxford OH 45056"],
-      currentLoc: null,
-      nextLoc: null
+      currentLoc: 0
     }
     this.getRoute = this.getRoute.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
   async getRoute() {
     const route = await axios.get(`http://10.36.0.92:8080/route/${encodeURIComponent(this.state.routeId)}`);
@@ -28,7 +28,6 @@ export default class MapManager extends Component {
     this.setState({
       currentLoc: this.state.currentLoc + 1
     });
-    this.forceUpdate();
   }
   componentDidMount() {
     this.getRoute();
@@ -36,12 +35,12 @@ export default class MapManager extends Component {
   render() {
     const {currentLoc, routeList} = this.state;
     const nextLoc = currentLoc + 1;
-    if (currentLoc){
-      return <View>
+    if (currentLoc >= 0){
+      return <View style={styles.container}>
         <MappingScreen startLoc = {routeList[currentLoc]} destLoc = {routeList[nextLoc]} />
         <Button title= 'Next Stop'
           type="outline"
-          onPress={this.nextStep()} />
+          onPress={this.nextStep} />
       </View>
     } else {
       return <View></View>
@@ -49,3 +48,10 @@ export default class MapManager extends Component {
     
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 30
+  },
+})

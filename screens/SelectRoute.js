@@ -19,7 +19,6 @@ export default class SelectRoute extends React.Component {
       routes: [{name: 'Route A'}, {name: 'Route B'}, {name: 'Route C'}]
     }
     this.getRoutes = this.getRoutes.bind(this);
-    this.selectRoute = this.selectRoute.bind(this);
   }
 
   async getRoutes() {
@@ -42,8 +41,6 @@ export default class SelectRoute extends React.Component {
   //TODO Implement function to load and display stored routes on buttons
   //Will we limit the number of routes that can be stored? Or will we need
   //to handle a variable amount of buttons?
-  selectRoute(e) {
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -66,6 +63,7 @@ export default class SelectRoute extends React.Component {
                 style={styles.routeButton}>
               <Button
                   id = {route.id}
+                  key = {route.id}
                   title= {route.name}
                   type="outline"
                   onPress={() => 

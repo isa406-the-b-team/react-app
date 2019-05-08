@@ -23,6 +23,7 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
+    "react-native-geocoding": "^0.3.0",
     "react-native-google-maps-directions": "^2.0.0",
     "react-native-maps": "^0.24.2",
     "react-navigation": "^3.0.9",
