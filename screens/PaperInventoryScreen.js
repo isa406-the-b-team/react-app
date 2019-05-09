@@ -2,9 +2,39 @@ import React from 'react';
 import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { MonoText } from "../components/StyledText";
+import axios from 'axios';
 
 export default class PaperInventoryScreen extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      routeId: this.props.match.params.routeId,
+      paperList: [
+        {
+          code: 'NYT',
+          number: 0
+        },
+        {
+          code: 'WSJ',
+          number: 0
+        }
+      ]
+    };
+    this.getPapers = this.getPapers.bind(this);
+  }
+  async getPapers() {
+    if (this.state.routeId){
+      const papers = await axios.get(`http://10.36.0.92:8080/newspaper/${this.state.routeId}`);
+      if (papers.data) {
+        this.setState({
+          paperList: papers.data.data.newspapers
+        })
+      }
+    }
+  }
+  componentDidMount() {
+    this.getPapers();
+  }
   render() {
 
     //TODO Implement confirm papers button function
@@ -12,15 +42,6 @@ export default class PaperInventoryScreen extends React.Component {
     /*
     See BeginRouteScreen
      */
-    const paperList = [
-      {
-        paperName: 'NY TIMES',
-        inventoryMessage: 'X copies required.'
-      },
-      {
-        paperName: 'WALL STREET JOURNAL',
-        inventoryMessage: 'X copies required.'
-      }];
 
     return (
         <View style={styles.container}>
@@ -28,7 +49,7 @@ export default class PaperInventoryScreen extends React.Component {
             <View style={styles.welcomeContainer}></View>
 
             <View style={styles.getStartedContainer}>
-              <Text style={styles.getStartedText}>ROUTENAME</Text>
+              <Text style={styles.getStartedText}>{this.state.routeId}</Text>
 
               <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
                 <MonoText style={styles.codeHighlightText}>Items to be Delivered</MonoText>
@@ -37,18 +58,19 @@ export default class PaperInventoryScreen extends React.Component {
 
             <View>
               {
-                paperList.map((item, i) => (
+                this.state.paperList.map((item, i) => (
                     <ListItem
                         key={i}
-                        title={item.paperName}
-                        subtitle={item.inventoryMessage}
+                        title={item.code}
+                        subtitle={`${item.number} copies needed`}
                     />
                 ))
               }
             </View>
 
             <View style={styles.confirmButton}>
-              <Button title="Confirm Papers"/>
+              <Button title="Confirm Papers"
+                onPress={() => this.props.history.push(`/mapping/${this.state.routeId}`)}/>
             </View>
 
           </ScrollView>

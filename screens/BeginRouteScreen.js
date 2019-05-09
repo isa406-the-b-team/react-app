@@ -2,9 +2,32 @@ import React from 'react';
 import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { MonoText } from "../components/StyledText";
+import axios from 'axios';
 
 export default class BeginRouteScreen extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      routeId: this.props.match.params.routeId,
+      addressList: []
+    }
+    this.getRoute = this.getRoute.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+  }
+  async getRoute() {
+    const route = await axios.get(`http://10.36.0.92:8080/route/${encodeURIComponent(this.state.routeId)}`);
+    if (route.data) {
+      this.setState({
+        addressList: route.data.data.recipients
+      });
+    }
+  }
+  componentDidMount() {
+    this.getRoute();
+  }
+  nextPage() {
+    this.props.history.push(`/papers/${encodeURIComponent(this.state.routeId)}`)
+  }
   render() {
 
     //TODO Implement confirm route button function
@@ -17,15 +40,7 @@ export default class BeginRouteScreen extends React.Component {
 
     Google "react native elements ListItem" for more info.
      */
-    const addressList = [
-      {
-        paperName: 'ADDRESS ONE',
-        inventoryMessage: 'SECONDLINE ONE'
-      },
-      {
-        paperName: 'ADDRESS TWO',
-        inventoryMessage: 'SECONDLINE TWO'
-      }];
+    
 
     return (
         <View style={styles.container}>
@@ -33,7 +48,7 @@ export default class BeginRouteScreen extends React.Component {
             <View style={styles.welcomeContainer}></View>
 
             <View style={styles.getStartedContainer}>
-              <Text style={styles.getStartedText}>ROUTENAME</Text>
+              <Text style={styles.getStartedText}>{this.state.routeId}</Text>
 
               <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
                 <MonoText style={styles.codeHighlightText}>Confirm Addresses</MonoText>
@@ -42,18 +57,19 @@ export default class BeginRouteScreen extends React.Component {
 
             <View>
               {
-                addressList.map((item, i) => (
+                this.state.addressList.map((item, i) => (
                     <ListItem
                         key={i}
-                        title={item.paperName}
-                        subtitle={item.inventoryMessage}
+                        title={`${item.street1}`}
+                        subtitle={`${item.city}, ${item.state} ${item.zip}`}
                     />
                 ))
               }
             </View>
 
             <View style={styles.confirmButton}>
-              <Button title="Confirm Route"/>
+              <Button title="Confirm Route"
+                onPress={this.nextPage}/>
             </View>
 
           </ScrollView>
@@ -61,7 +77,6 @@ export default class BeginRouteScreen extends React.Component {
     );
   }
 }
-
 
 
 const styles = StyleSheet.create({

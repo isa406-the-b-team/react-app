@@ -5,10 +5,14 @@ import AppNavigator from './navigation/AppNavigator';
 import Routing from './screens/Routing';
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
-
+  constructor(props){
+    super(props)
+    this.state = {
+      isLoadingComplete: false,
+    };
+    console.disableYellowBox = true;
+  }
+  
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

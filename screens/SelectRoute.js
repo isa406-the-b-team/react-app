@@ -16,14 +16,15 @@ export default class SelectRoute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      routes: [{name: 'Route A', id: 1}, {name: 'Route B', id: 2}, {name: 'Route C', id: 3}]
+      routes: ['Route A', 'Route B', 'Route C']
     }
     this.getRoutes = this.getRoutes.bind(this);
   }
 
   async getRoutes() {
     try {
-      const routes = await axios.get('http://10.36.0.92:8080/route');
+      const resp = await axios.get('http://10.36.0.92:8080/route');
+      const routes = resp.data.data ? resp.data.data : null;
       if (routes && routes.length > 0) {
         this.setState({
           routes: routes
@@ -40,10 +41,6 @@ export default class SelectRoute extends React.Component {
   //TODO Implement function to load and display stored routes on buttons
   //Will we limit the number of routes that can be stored? Or will we need
   //to handle a variable amount of buttons?
-  selectRoute(e) {
-    const routeId = e.target.value;
-    this.props.history.push(`/beginRoute/${routeId}`);
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -65,17 +62,24 @@ export default class SelectRoute extends React.Component {
                 key = {route.id} 
                 style={styles.routeButton}>
               <Button
-                  value = {route.id}
-                  title= {route.name}
+                  id = {route}
+                  key = {route}
+                  title= {route}
                   type="outline"
-                  onPress={(e) => this.selectRoute(e)}/>
+                  onPress={() => 
+                    this.props.history.push(`/beginRoute/${encodeURIComponent(route)}`)}/>
             </View>))}
             
           </View>
-
+          <View>
+              <Button
+                  title= 'Add a New Route'
+                  type="outline"
+                  onPress={() => this.props.history.push('/addroute')}/>
+          </View>
 
         </ScrollView>
-
+        
         <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>By starting a route, you agree to our Terms of Service</Text>
         </View>
