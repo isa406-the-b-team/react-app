@@ -9,17 +9,20 @@ export default class MapManager extends Component {
     super(props);
     this.state = {
       routeId: this.props.match.params.routeId,
-      routeList: ["3770 Southpointe Pkwy Oxford OH 45056", "501 E. High Street Oxford OH 45056", "550 E. Spring Street Oxford OH 45056"],
-      currentLoc: 0
+      routeList: [],
+      currentLoc: -1
     }
     this.getRoute = this.getRoute.bind(this);
     this.nextStep = this.nextStep.bind(this);
   }
   async getRoute() {
     const route = await axios.get(`http://10.36.0.92:8080/route/${encodeURIComponent(this.state.routeId)}`);
-    if (route && route.length > 1) {
+    if (route && route.data.data.recipients.length > 1) {
+      const list = route.data.data.recipients.map((item) => {
+        return `${item.street1} ${item.city} ${item.state} ${item.zip}`
+      })
       this.setState({
-        routeList: route,
+        routeList: list,
         currentLoc: 0
       })
     }

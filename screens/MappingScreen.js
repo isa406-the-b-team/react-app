@@ -54,7 +54,6 @@ export default class MappingScreen extends Component {
             latitude: location.lat,
             longitude: location.lng
         }})
-        alert(JSON.stringify(location))
       })
       Geocoder.from(this.props.destLoc).then(json => {
         const location = json.results[0].geometry.location;

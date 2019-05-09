@@ -188,9 +188,9 @@ export default class AddRouteScreen extends React.Component {
               this.state.papers.map((paper, index) => (
                 <Button
                   key={index}
-                  color= {(this.state.newAddress.newspapers.find((data) => data.newspaperCode === paper.newspaperCode)) ? 'green' : 'red'}
+                  color= {(this.state.newAddress.newspapers.find((data) => data.newspaperCode === paper)) ? 'green' : 'red'}
                   onPress={() => this.handlePaperChange(paper)}
-                  title = {paper.newspaperCode}>
+                  title = {paper}>
                 </Button>
               ))
             }
@@ -208,9 +208,9 @@ export default class AddRouteScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: 'column',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
+    //flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 50
   },
   input: {
 

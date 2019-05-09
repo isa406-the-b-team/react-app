@@ -16,7 +16,7 @@ export default class SelectRoute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      routes: [{name: 'Route A'}, {name: 'Route B'}, {name: 'Route C'}]
+      routes: ['Route A', 'Route B', 'Route C']
     }
     this.getRoutes = this.getRoutes.bind(this);
   }
@@ -24,7 +24,7 @@ export default class SelectRoute extends React.Component {
   async getRoutes() {
     try {
       const resp = await axios.get('http://10.36.0.92:8080/route');
-      const routes = resp.data ? resp.data : null;
+      const routes = resp.data.data ? resp.data.data : null;
       if (routes && routes.length > 0) {
         this.setState({
           routes: routes
@@ -62,12 +62,12 @@ export default class SelectRoute extends React.Component {
                 key = {route.id} 
                 style={styles.routeButton}>
               <Button
-                  id = {route.id}
-                  key = {route.id}
-                  title= {route.name}
+                  id = {route}
+                  key = {route}
+                  title= {route}
                   type="outline"
                   onPress={() => 
-                    this.props.history.push(`/beginRoute/${encodeURIComponent(route.name)}`)}/>
+                    this.props.history.push(`/beginRoute/${encodeURIComponent(route)}`)}/>
             </View>))}
             
           </View>
